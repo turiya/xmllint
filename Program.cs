@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.IO;
 
 namespace xmllint
 {
     class Program
     {
-        static String fileName = "";
+
+        static TextReader textReader = Console.In;
 
         static void Main(string[] args)
         {
@@ -18,7 +20,7 @@ namespace xmllint
                 settings.Indent = true;
 
                 XmlDocument doc = new XmlDocument();
-                doc.Load(fileName);
+                doc.Load(textReader);
 
                 XmlTextWriter writer = new XmlTextWriter(Console.Out);
                 writer.Formatting = Formatting.Indented;
@@ -33,13 +35,11 @@ namespace xmllint
 
         private static void initialize(string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length == 1)
             {
-                Console.WriteLine("Enter a filename");
-                Environment.Exit(-1);
+                String fileName = args[0];
+                textReader = new StreamReader(fileName);
             }
-            fileName = args[0];
         }
     }
 }
-
